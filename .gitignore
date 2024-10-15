@@ -1,0 +1,14 @@
+.idea
+venv
+
+# cache
+**/__pycache__
+
+# static files
+backend/static
+
+# env files
+.env
+.env.db
+.env.prod
+.env.db.prod
