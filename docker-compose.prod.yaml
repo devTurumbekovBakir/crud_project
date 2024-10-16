@@ -5,7 +5,7 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile.prod
-    command: gunicorn --workers 4 realty_manager.asgi:application --bind 0.0.0.0:8000
+    command: uvicorn --workers 4 realty_manager.asgi:application --bind 0.0.0.0:8000
     volumes:
       - static_volume:/home/backend/web/static
     expose:
