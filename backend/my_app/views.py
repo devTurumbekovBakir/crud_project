@@ -1,37 +1,29 @@
-from asgiref.sync import async_to_sync
-from channels.layers import get_channel_layer
-from django.shortcuts import render
 from rest_framework import viewsets
-from .models import User, Profile, Category, Product
-from .serializers import UserSerializer, ProfileSerializer, CategorySerializer, ProductSerializer
+from .models import UserProfile, UserDetail, UserGroup
+from .serializers import UserProfileSerializer, UserDetailSerializer, UserGroupSerializer
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
 
-class UserViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
+class UserProfileViewSet(viewsets.ModelViewSet):
+    queryset = UserProfile.objects.all()
+    serializer_class = UserProfileSerializer
 
     def perform_create(self, serializer):
-        instance = serializer.save()
+        user = serializer.save()
         channel_layer = get_channel_layer()
         async_to_sync(channel_layer.group_send)(
-            "notifications",
+            "user_notifications",
             {
-                "type": "send_notification",
-                "message": f"User {instance.username} created!"
+                "type": "notify_user_creation",
+                "message": f"User {user.username} has been created.",
             }
         )
 
-class ProfileViewSet(viewsets.ModelViewSet):
-    queryset = Profile.objects.all()
-    serializer_class = ProfileSerializer
 
-class CategoryViewSet(viewsets.ModelViewSet):
-    queryset = Category.objects.all()
-    serializer_class = CategorySerializer
+class UserDetailViewSet(viewsets.ModelViewSet):
+    queryset = UserDetail.objects.all()
+    serializer_class = UserDetailSerializer
 
-class ProductViewSet(viewsets.ModelViewSet):
-    queryset = Product.objects.all()
-    serializer_class = ProductSerializer
-
-
-def index(request):
-    return render(request, 'index.html')
+class UserGroupViewSet(viewsets.ModelViewSet):
+    queryset = UserGroup.objects.all()
+    serializer_class = UserGroupSerializer

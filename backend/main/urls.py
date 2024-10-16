@@ -22,9 +22,6 @@ from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 from django.views.generic import TemplateView
 
-class IndexView(TemplateView):
-    template_name = 'my_app/templates/index.html'
-
 schema_view = get_schema_view(
    openapi.Info(
       title="CRUD API",
@@ -39,7 +36,7 @@ schema_view = get_schema_view(
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('my_app.urls')),
-    path('', IndexView.as_view(), name='index'),
+    path('', TemplateView.as_view(template_name='index.html'), name='index'),
 
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),

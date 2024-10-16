@@ -5,7 +5,7 @@ services:
     build:
       context: backend
       dockerfile: backend/Dockerfile.prod
-    command: gunicorn --workers 4 realty_manager.wsgi:application --bind 0.0.0.0:8000
+    command: gunicorn --workers 4 realty_manager.asgi:application --bind 0.0.0.0:8000
     volumes:
       - static_volume:/home/backend/web/static
     expose:
@@ -14,6 +14,10 @@ services:
       - ./.env.prod
     depends_on:
       - db
+      - redis
+
+  redis:
+    image: "redis:alpine"
 
   db:
     image: postgres:15.4-alpine3.18
