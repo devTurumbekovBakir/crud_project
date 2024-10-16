@@ -3,8 +3,8 @@ version: '3.3'
 services:
   django:
     build:
-      context: backend
-      dockerfile: backend/Dockerfile.prod
+      context: ./backend
+      dockerfile: Dockerfile.prod
     command: gunicorn --workers 4 realty_manager.asgi:application --bind 0.0.0.0:8000
     volumes:
       - static_volume:/home/backend/web/static
