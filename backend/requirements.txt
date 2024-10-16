@@ -7,3 +7,4 @@ drf-yasg
 python-dotenv
 uvicorn[standard]
 gunicorn
+websockets
